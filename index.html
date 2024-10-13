@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10 Pop-upów</title>
+    <style>
+        body {
+            background-color: black;
+            margin: 0;
+            overflow: hidden;
+            user-select: none;
+        }
+        .popup {
+            position: absolute;
+            background-color: white;
+            box-sizing: border-box;
+            display: inline-block;
+            cursor: grab;
+            user-select: none;
+            z-index: 1;
+        }
+        .popup img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+    </style>
+    <script>
+        function delay(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function makeDraggable(element) {
+            let isDragging = false;
+            let offsetX, offsetY;
+
+            element.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                offsetX = e.clientX - element.getBoundingClientRect().left;
+                offsetY = e.clientY - element.getBoundingClientRect().top;
+                element.style.cursor = 'grabbing';
+                element.style.zIndex = 1000; // Bring the popup to the front when dragging
+            });
+
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                element.style.left = `${e.clientX - offsetX}px`;
+                element.style.top = `${e.clientY - offsetY}px`;
+            });
+
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                element.style.cursor = 'grab';
+            });
+        }
+
+        async function showPopups() {
+            for (let count = 1; count <= 10; count++) {
+                const popup = document.createElement('div');
+                popup.className = 'popup';
+                popup.style.zIndex = count; // Assign unique z-index to each popup
+                const image = document.createElement('img');
+                image.src = `assets/image_${String(count).padStart(2, '0')}.png`;
+
+                image.onload = () => {
+                    popup.style.width = `${image.naturalWidth}px`;
+                    popup.style.height = `${image.naturalHeight}px`;
+                };
+
+                const closeButton = document.createElement('button');
+                closeButton.className = 'close-button';
+                closeButton.textContent = 'X';
+                closeButton.style.zIndex = count + 1; // Ensure close button stays above popup
+                closeButton.onclick = () => popup.remove();
+
+                popup.appendChild(closeButton);
+                popup.appendChild(image);
+                popup.style.top = `${Math.random() * (window.innerHeight - image.naturalHeight)}px`;
+                popup.style.left = `${Math.random() * (window.innerWidth - image.naturalWidth)}px`;
+                document.body.appendChild(popup);
+
+                makeDraggable(popup);
+
+                await delay(200);
+            }
+        }
+
+        window.addEventListener('load', showPopups);
+    </script>
+  <script type="module" crossorigin src="/assets/index-CQ8nXOs9.js"></script>
+</head>
+<body>
+    <div id="three-canvas"></div>
+</body>
+</html>
