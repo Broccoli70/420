@@ -82,7 +82,7 @@
                 popup.className = 'popup';
                 popup.style.zIndex = count; // Assign unique z-index to each popup
                 const image = document.createElement('img');
-                image.src = `assets/image_${String(count).padStart(2, '0')}.png`;
+                image.src = `public/assets/image_${String(count).padStart(2, '0')}.png`;
 
                 image.onload = () => {
                     popup.style.width = `${image.naturalWidth}px`;
@@ -109,7 +109,7 @@
 
         window.addEventListener('load', showPopups);
     </script>
-  <script type="module" crossorigin src="/assets/index-CQ8nXOs9.js"></script>
+  <script type="module" crossorigin src="/assets/index-BsXIjYJV.js"></script>
 </head>
 <body>
     <div id="three-canvas"></div>
