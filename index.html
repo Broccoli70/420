@@ -82,7 +82,7 @@
                 popup.className = 'popup';
                 popup.style.zIndex = count; // Assign unique z-index to each popup
                 const image = document.createElement('img');
-                image.src = `public/assets/image_${String(count).padStart(2, '0')}.png`;
+                image.src = `assets/image_${String(count).padStart(2, '0')}.png`;
 
                 image.onload = () => {
                     popup.style.width = `${image.naturalWidth}px`;
