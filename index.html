@@ -74,6 +74,28 @@
                 isDragging = false;
                 element.style.cursor = 'grab';
             });
+
+            // Obsługa urządzeń mobilnych
+            element.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                const touch = e.touches[0];
+                offsetX = touch.clientX - element.getBoundingClientRect().left;
+                offsetY = touch.clientY - element.getBoundingClientRect().top;
+                element.style.cursor = 'grabbing';
+                element.style.zIndex = 1000;
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const touch = e.touches[0];
+                element.style.left = `${touch.clientX - offsetX}px`;
+                element.style.top = `${touch.clientY - offsetY}px`;
+            });
+
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+                element.style.cursor = 'grab';
+            });
         }
 
         async function showPopups() {
